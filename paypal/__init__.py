@@ -1,7 +1,6 @@
 import requests
-import utils
 import json
-import simplejson
+from . import utils
 
 
 class PaypalSandBoxConf(object):
@@ -72,7 +71,7 @@ class PaypalAuthorize(object):
 
     def authorize(self):
         data = {'grant_type': 'client_credentials'}
-        response = requests.post(config.auth_url, headers=self.headers,
+        response = requests.post(self.config.auth_url, headers=self.headers,
                                  auth=(self.client, self.secret), data=data)
 
         if response.status_code == 200:
@@ -129,7 +128,7 @@ class Paypal(object):
         headers = utils.checkout_header(self.access_token)
         data = self.build_data()
 
-        response = requests.post(config.checkout_url,
+        response = requests.post(self.config.checkout_url,
                                  headers=headers, data=self.build_data())
 
         if response.status_code == 201:
